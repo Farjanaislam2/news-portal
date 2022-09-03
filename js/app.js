@@ -1,95 +1,149 @@
+// call category api
 const loadCategory = async () => {
-    const res = await fetch(
-        'https://openapi.programming-hero.com/api/news/categories',
-    );
-    const data = await res.json();
-    return data.data.news_category;
-};
+    const url = 'https://openapi.programming-hero.com/api/news/categories'
+    try {
+        const response = await fetch(url)
+        const data = await response.json();
+        return data.data.news_category;
+    } catch (error) {
+        console.log(error)
+    }
+}
+// display category 
+const categoryDisplay = async () => {
+    const data = await loadCategory();
+    data.forEach(category => {
+        let categorySection = document.getElementById('category-area');
+        const createCategory = document.createElement('div')
+        createCategory.innerHTML = `
+        <div class="d-grid gap-2 mb-1">
+            <button onClick="loadNews(${category.category_id})" class="btn btn-outline-dark" type="button">${category.category_name}</button>
+        </div>
+        `
+        categorySection.appendChild(createCategory);
+    })
+}
 
-const loadAllCategory = async () => {
-    const dataAll = await loadCategory();
-    const categoryField = document.getElementById('category-menu');
-    dataAll.forEach((categoryName) => {
-        const newCategory = document.createElement('li');
-        newCategory.classList.add('category-responsive');
-        newCategory.innerHTML = `
-        <a href="#" id= "handler" onclick= "loadAllNews(${categoryName.category_id})" class="block category-responsive py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">${categoryName.category_name}</a>
-        `;
-        categoryField.appendChild(newCategory);
-    });
-};
+// load data after click category button
 
-loadAllCategory();
+// call news api 
+const loadNews = async (category_id) => {
+    // Spinner start
+    toggleSpinner(true);
 
-const loadAllNews = (id) => {
-    fetch(`https://openapi.programming-hero.com/api/news/category/0${id}`)
-        .then((res) => res.json())
-        .then((data) => showAllNews(data.data));
-};
+    const response = await fetch(`https://openapi.programming-hero.com/api/news/category/0${category_id}`)
+    const newses = await response.json();
+    const newsesData = newses.data;
 
-const showAllNews = (allNews) => {
-    const newsContainer = document.getElementById('newsContainer');
-    spinner.classList.add('hidden');
+    const newsFound = document.getElementById('news-found');
+    newsFound.innerHTML = ''
+    const newsFoundText = document.createElement('div');
+    if (newsesData.length > 0) {
+        newsFoundText.innerHTML = `<h5 id="news-found" class="text-center border border-dark p-1 mb-2">News Found: ${newsesData.length}</h5>`;
+        newsFound.appendChild(newsFoundText);
+    } else {
+        newsFoundText.innerHTML = `<h5 id="news-found" class="text-center border border-dark p-1">Sorry No News Found</h5>`;
+        newsFound.appendChild(newsFoundText);
+    }
+    return displayNews(newsesData);
+}
 
-    allNews.forEach((news) => {
-        spinner.classList.remove('hidden');
-        const { image_url, title, details, author, total_view } = news;
-        const { name, published_date, img } = author;
-        const newsDiv = document.createElement('div');
-        newsDiv.classList.add(
-            'card',
-            'lg:card-side',
-            'bg-base-100',
-            'shadow-xl',
-            'mb-5',
-        );
-        newsDiv.innerHTML = `
-        <figure><img width="600px" src="${image_url}" alt="Album"></figure>
-            <div class="card-body">
-                    <h2 class="card-title">${title}</h2>
-                    <p>${details.length > 350 ? details.slice(0, 350) + '...' : details}</p>
-            <div class="grid grid-cols-4 gap-4">
-            <div class="flex">
-                <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                    <div class="w-10 rounded-full">
-                        <img src="${img}" />
+// display news after click a category.
+const displayNews = async (newsesData) => {
+
+    // sort array by total_view
+    let x = newsesData.sort((a, b) => (b.total_view > a.total_view ? 1 : -1));
+
+    const newsSection = document.getElementById('news-area');
+    newsSection.innerHTML = "";
+
+    newsesData.forEach(news => {
+        const {
+            title,
+            _id,
+            details,
+            image_url,
+            author,
+            total_view,
+            rating
+        } = news;
+
+        const createSingleNews = document.createElement('div');
+        createSingleNews.innerHTML = `
+        <div class="card mb-3">
+            <div class="row g-0 align-items-center">
+                <div class="col-md-4">
+                    <img src="${image_url}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title text-center text-md-start">${title}</h5>
+                        <p>${details.length > 300 ? details.slice(0, 300) + '...' : details}</p>
+                        <div class="m-1 border p-2 align-items-center row">
+                            <div class="col-9 col-md-6 d-flex align-items-center">
+                                <img src="${author.img}" class="news-author-img rounded-circle"/>
+                                <p class="ms-3">Name: ${author.name ? news.author.name : 'Name not found'} <br />
+                                    <span class="text-success news-author-published">Published: ${author.published_date ? author.published_date : 'Not Found'}</span>
+                                </p>
+                            </div>
+                            <div class="col-3 col-md-3">
+                                <span><i class="fa-regular fa-eye"></i> ${total_view ? total_view : 'N/A'}</span>
+                                <br />
+                                <span><i class="fa-sharp fa-solid fa-star"></i> ${rating.number ? rating.number : 'N/A'}</span>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <button type="button" class="btn btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick='newsDetailsLoad("${_id}")'>Details<i class="fa-solid fa-play ms-1"></i></button>
+                            </div>
+                        </div>
                     </div>
-                </label>
-                    <div>
-                        <p class="pl-2 block"arif</p>
-                        <p class="pl-2 block">${published_date}</p>
-                    </div>
-            </div>
-            <div class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p class="pl-2 font-bold text-xl">${total_view}</p>
-            </div>
-            <div class="rating items-center">
-                <input type="radio" name="rating-1" class="mask mask-star" />
-                <input type="radio" name="rating-1" class="mask mask-star" checked />
-                <input type="radio" name="rating-1" class="mask mask-star" />
-                <input type="radio" name="rating-1" class="mask mask-star" />
-                <input type="radio" name="rating-1" class="mask mask-star" />
-            </div>
-            <div>
-                <label for="my-modal-3" onclick= "showModal('${img}', '${name}')" class="btn btn-primary modal-button">Show Details</label>
-            </div>
+                </div>
             </div>
         </div>
-        `;
-        newsContainer.appendChild(newsDiv);
-    });
-};
+        `
+        newsSection.appendChild(createSingleNews);
 
-const showModal = (img, name) => {
-    const modalBody = document.getElementById('modal-body');
-    modalBody.innerHTML = `
-    <img src="${img}" alt="" />
-    <h1 class = "text-xl mt-5">Name: ${name}</h1>
-    `;
-};
+    })
+    // Spinner start
+    toggleSpinner(false)
 
-loadAllNews();
+}
+
+// Spinner 
+const toggleSpinner = isLoading => {
+    const spinner = document.getElementById('spinner')
+    if (isLoading) {
+        spinner.classList.remove('d-none');
+    } else {
+        spinner.classList.add('d-none');
+    }
+}
+
+// load newsDetails api
+const newsDetailsLoad = async (id) => {
+    const response = await fetch(`https://openapi.programming-hero.com/api/news/${id}`)
+    const newsData = await response.json();
+    displayNewsDetails(newsData.data)
+}
+
+// display news details using a modal
+const displayNewsDetails = (newsData) => {
+    console.log(newsData)
+    const modalContainer = document.getElementById('news-details-modal');
+    modalContainer.innerHTML = ""
+    const modalDiv = document.createElement('div');
+    modalDiv.innerHTML = `
+    <div class="modal-header bg-success text-white text-justify">
+        <p class="modal-title" id="exampleModalLabel">${newsData[0].title}</p>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <span>${newsData[0].details}</span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+    </div>
+    `
+    modalContainer.appendChild(modalDiv)
+}
+
+categoryDisplay()
