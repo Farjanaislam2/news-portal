@@ -1,105 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- daisyui -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.24.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <!-- tailwindcss -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FlowBite -->
-    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
-    <!-- FlowBite -->
-    <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!--     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.24.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script> -->
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Style CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <title>AZM Portal</title>
 </head>
 
-<body class="p-5">
+<body>
+    <!-- Header -->
     <header>
-        <nav>
-            <div class="navbar bg-base-100">
-                <div class="flex-1">
-                    <a class="btn btn-ghost normal-case text-xl">Report Portal</a>
-                </div>
-                <div class="flex-none">
-                    <div class="dropdown dropdown-end">
-                        <div class="flex-none">
-                            <ul class="menu menu-horizontal p-0">
-                                <li><a>News</a></li>
-                                <li><a>Blog</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                            <div class="w-10 rounded-full">
-                                <img src="images/Avatar.png" />
-                            </div>
-                        </label>
-                        <ul tabindex="0"
-                            class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <a class="justify-between">
-                                    Profile
-                                    <span class="badge">New</span>
-                                </a>
-                            </li>
-                            <li><a>Settings</a></li>
-                            <li><a>Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <hr class="mt-5 mb-5">
-        <nav id="nav" class="mega-nav-center bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
-            <div
-                class="flex mega-menu-center flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5">
-                <button data-collapse-toggle="mega-menu-full" type="button"
-                    class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                    aria-controls="mega-menu-full" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                            clip-rule="evenodd"></path>
-                    </svg>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container py-2">
+                <a class="navbar-brand text-black fw-bold fs-4" href="#">AZM Portal</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <div id="mega-menu-full"
-                    class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1">
-                    <ul id="category-menu"
-                        class="flex flex-col mt-4 text-sm font-medium md:flex-row md:space-x-8 md:mt-0">
-                        <!-- <li>
-                                <a href="#"
-                                    class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700"
-                                    aria-current="page"></a>
-                            </li> -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+                        <li class="nav-item">
+                            <a class="nav-link active fw-bold" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="blog/blog.html">Blog</a>
+                        </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link fw-bold" href="#">Contact Us</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <br>
-    <progress id="spinner" class="progress w-full hidden"></progress>
+    <!-- Header End -->
+    <!-- News Section -->
     <main>
-        <!-- card section -->
-        <section id="newsContainer"></section>
-        <!-- modal section -->
-        <input type="checkbox" id="my-modal-3" class="modal-toggle" />
-        <div class="modal">
-            <div class="modal-box relative">
-                <label for="my-modal-3" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                <div id="modal-body">
+        <section class="container mt-5">
+            <div class="row">
+                <div class="col-12 col-md-3 border-end">
+                    <!-- Category section -->
+                    <h3 class="text-center mb-2 fw-bold">Categories</h3>
+                    <div class="" id="category-area">
 
+                    </div>
+                </div>
+                <div class="col-12 col-md-9 mt-3 mt-md-0">
+                    <!-- Spinner -->
+                    <div id="spinner" class="d-none">
+                        <div class="d-flex justify-content-center mt-5">
+                            <button class="btn btn-dark" type="button" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
+                        </div>
+                    </div>
+                    <!-- News Section -->
+                    <div id="news-found">
+                    </div>
+                    <div id="news-area">
+                    </div>
+                    <!-- Modal -->
+                    <div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content" id="news-details-modal">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
-    <script src="js/app.js"></script>
+    <!-- Main JavaScript -->
+    <script src="js/index.js"></script>
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>
